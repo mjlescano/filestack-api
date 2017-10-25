@@ -21,16 +21,16 @@ app.get('/', function (req, res) {
 
 app.get('/files/:handle', function (req, res, next) {
   res.set('Content-Type', 'text/html')
-  
+
   const fileHandle = req.params.handle
-  
+
   if (!fileHandle || fileHandle === ':handle') {
     res.write(`<p>Please, complete the <code>:handle</code> param on the url bar ☝️</p>`)
     res.write(`<p><a href="/"><code>&larr; Go Back</code></a></p>`)
     res.end()
     return
   }
-  
+
   filestack.get(fileHandle).then((uri) => {
     res.write(`<h2>Filestack File: <small>${fileHandle}</small></h2>`)
     res.write(`<div><small><code><a target="_blank" href="${uri}">${uri}</a></code></small></div>`)
@@ -47,16 +47,16 @@ app.get('/files/:handle', function (req, res, next) {
 
 app.get('/files/:handle/remove', function (req, res, next) {
   res.set('Content-Type', 'text/html')
-  
+
   const fileHandle = req.params.handle
-  
+
   if (!fileHandle || fileHandle === ':handle') {
     res.write(`<p>Please, complete the <code>:handle</code> param on the url bar ☝️</p>`)
     res.write(`<p><a href="/"><code>&larr; Go Back</code></a></p>`)
     res.end()
     return
   }
-  
+
   filestack.remove(fileHandle).then((info) => {
     res.write(`<h2>Remove File: <small>${fileHandle}</small></h2>`)
     res.write('<ul>')
@@ -85,22 +85,22 @@ app.get('/documents/:url/info', function (req, res, next) {
     res.end()
     return
   }
-  
+
   filestack.getDocumentInfo(req.params.url).then((info) => {
     res.write('<code>')
     res.write(JSON.stringify(info, null, 2))
     res.write('</code>')
-    
+
     if (info.pagesCount) {
       res.write(`<p>Generate page previews:&nbsp;`)
-      
+
       for (let page = 1; page <= info.pagesCount; page++) {
         res.write(`<small><code>&nbsp;<a href="/documents/${encodeURIComponent(req.params.url)}/${page}">${page}</a>&nbsp;</code></small>`)
       }
-      
+
       res.write('</p>')
     }
-    
+
     res.write('<p><a href="/"><code>&larr; Go Back</code></a></p>')
     res.end()
   }).catch((err) => {
@@ -117,18 +117,18 @@ app.get('/documents/:url/:page', function (req, res, next) {
     res.end()
     return
   }
-  
+
   if (!req.params.page) req.params.page = 1
-  
+
   const options = {}
-  
+
   if (req.query.basePath) options.basePath = req.query.basePath
-  
+
   filestack.generateDocumentPage(req.params.url, req.params.page, options).then((image) => {
     res.write('<code>')
     res.write(JSON.stringify(image, null, 2))
     res.write('</code>')
-    
+
     res.write('<p><a href="/"><code>&larr; Go Back</code></a></p>')
     res.end()
   }).catch((err) => {
@@ -137,12 +137,15 @@ app.get('/documents/:url/:page', function (req, res, next) {
 })
 
 app.get('/data/remove', function (req, res, next) {
+  // to remove all ids go to https://dev.filestack.com/apps/[ID]/console
+  // and on the client run:
+  // Array.from(document.querySelectorAll('[data-handle]')).map((el) => el.dataset.handle).forEach((id) => { console.log(id) })
   const dataToRemove = safeRequire('./.data/remove.json') || []
-  
+
   res.set('Content-Type', 'text/html')
-  
+
   if (dataToRemove.length > 0) res.write('<ul>')
-  
+
   batchPromises(5, dataToRemove, (fileHandle) => {
     return filestack.remove(fileHandle).then((info) => {
       res.write(`<li>Removed ${fileHandle}</li>`)

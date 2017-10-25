@@ -1,14 +1,17 @@
 {
   "port": 3000,
   "filestack": {
+    "apiUrl": "https://www.filestackapi.com/api",
     "apiKey": "",
     "appSecret": "",
-    "azureAccount": "",
     "store": {
-      "location": "S3",
+      "account": "",
+      "secret": "",
+      "location": "",
       "path": "",
       "container": "your-store-storage-container-name",
       "region": ""
-    }
+    },
+    "transformUrl": "https://process.filestackapi.com"
   }
 }
