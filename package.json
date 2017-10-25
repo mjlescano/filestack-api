@@ -1,0 +1,29 @@
+{
+  "name": "filestack-api",
+  "version": "0.0.1",
+  "description": "Node implementation of the Filestack API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "dos-config": "^3.0.1",
+    "request": "^2.81.0",
+    "escape-string-regexp": "^1.0.5",
+    "safe-require": "^1.0.3",
+    "batch-promises": "^0.0.3",
+    "express": "^4.15.3",
+    "aws4": "^1.6.0"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/filestack-api"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "filestack"
+  ]
+}

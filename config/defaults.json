@@ -1,0 +1,14 @@
+{
+  "port": 3000,
+  "filestack": {
+    "apiKey": "",
+    "appSecret": "",
+    "azureAccount": "",
+    "store": {
+      "location": "S3",
+      "path": "",
+      "container": "your-store-storage-container-name",
+      "region": ""
+    }
+  }
+}
